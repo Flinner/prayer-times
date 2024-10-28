@@ -2,6 +2,7 @@
 
 # ----- Parameters ------ #
 # Coordinates: https://www.mapcoordinates.net/en
+# Set lat and long explicitly, or leave commented to get them automatically from ipinfo.io
 lat='30.001780'
 long='31.290419'
 # Calculation Method: https://api.aladhan.com/v1/methods
@@ -49,11 +50,28 @@ check() {
   fi
 
   if [[ "$fetch_prayers" || "$available_month" != "${date[month]}" ]]; then
+    # Fetch the geolocation data from ipinfo.io
+    response=$(curl -s https://ipinfo.io)
+
+    echo "-- fetching latitude and longitude"
+    # Parse the latitude and longitude
+    location=$(echo $response | jq -r '.loc')
+
+    # Separate latitude and longitude
+    latitude=$(echo $location | cut -d',' -f1)
+    longitude=$(echo $location | cut -d',' -f2)
+
+    # Set `lat` to `latitude`, or default to the specified value above
+    lat=${latitude:lat}
+    long=${longitude:long}
+
+    echo "-- latitude: ${lat}, longitude: ${long}"
     echo "-- fetching current month prayer calendar (${date[month]}-${date[year]})"
     # Documentation: https://aladhan.com/prayer-times-api#GetCalendar
     curl -Lso "$prayers_json" "https://api.aladhan.com/v1/calendar/${date[year]}/${date[month]}?latitude=$lat&longitude=$long&method=$method"
   fi
 }
+
 
 add-jobs() {
   # WARNING: THIS SCRIPTS REMOVES ALL JOBS IN QUEUE "P" SCHEDULED USING AT (ADJUST ACCORDINGLY)

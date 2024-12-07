@@ -50,20 +50,24 @@ check() {
   fi
 
   if [[ "$fetch_prayers" || "$available_month" != "${date[month]}" ]]; then
-    # Fetch the geolocation data from ipinfo.io
-    response=$(curl -s https://ipinfo.io)
 
-    echo "-- fetching latitude and longitude"
-    # Parse the latitude and longitude
-    location=$(echo $response | jq -r '.loc')
-
-    # Separate latitude and longitude
-    latitude=$(echo $location | cut -d',' -f1)
-    longitude=$(echo $location | cut -d',' -f2)
-
-    # Set `lat` to `latitude`, or default to the specified value above
-    lat=${latitude:lat}
-    long=${longitude:long}
+  # Only Fetch geolocation in case "lat" isn't defined.  
+  if [ -z "$lat" ] || [ -z "$long" ]; then
+      # Fetch the geolocation data from ipinfo.io
+      response=$(curl -s https://ipinfo.io)
+  
+      echo "-- fetching latitude and longitude"
+      # Parse the latitude and longitude
+      location=$(echo $response | jq -r '.loc')
+  
+      # Separate latitude and longitude
+      latitude=$(echo $location | cut -d',' -f1)
+      longitude=$(echo $location | cut -d',' -f2)
+  
+      # Set `lat` to `latitude`, or default to the specified value above
+      lat=${latitude:lat}
+      long=${longitude:long}
+    fi
 
     echo "-- latitude: ${lat}, longitude: ${long}"
     echo "-- fetching current month prayer calendar (${date[month]}-${date[year]})"

@@ -46,8 +46,8 @@ cd prayer-times
 
 1. Copy files to their corresponding location on your system
 2. Set the parameters for the script
-   - `lat`: latitude
-   - `long`: longitude **(or leave empty to auto fetch `lat` and `long` from [ipinfo.io](https://ipinfo.io))**
+   - `lat`: latitude (or leave empty to auto fetch `lat` and `long`)
+   - `long`: longitude (or leave empty to auto fetch `lat` and `long`)
    - `method`: calculation method
    - `print_lang`: language to print prayer times schedule in (`ar`/`en`)
    - `notify`: notification daemon (`mako`/`dunst`)

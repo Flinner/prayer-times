@@ -56,7 +56,11 @@ check() {
       # Fetch the geolocation data from ipinfo.io
       response=$(curl -s https://ipinfo.io)
   
-      echo "-- fetching latitude and longitude"
+      echo "-- fetching latitude and longitude (from ipinfo.io)"
+
+      # Parse City Name
+      city=$(echo $response | jq -r '.city')
+      echo "-- city: ${city}"
       # Parse the latitude and longitude
       location=$(echo $response | jq -r '.loc')
   

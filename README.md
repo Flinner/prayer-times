@@ -6,6 +6,9 @@
 <img alt="Yad AR" src="screenshots/yad-ar.png"/>
 </div>
 
+> [!WARNING]
+> This script is now deprecated in favor of [go-pray](https://github.com/0xzer0x/go-pray) for offline prayer times calculation, better performance, and less dependencies.
+
 A versatile Bash script designed to manage and display Islamic prayer times. It
 retrieves prayer schedules based on the user's geographical coordinates and
 provides notifications for each prayer. The script supports multiple languages
